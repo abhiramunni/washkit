@@ -447,3 +447,67 @@ function seedState(){
   };
 }
 var state;
+try{ state = JSON.parse(localStorage.getItem(LS_KEY)) || seedState(); }catch(e){ state = seedState(); }
+if(!state || !Array.isArray(state.garments)) state = seedState();
+if(state.weekKey !== weekStartISO()){ state.weekKey = weekStartISO(); state.loads.forEach(function(l){ l.done=false; }); }
+function save(){ try{ localStorage.setItem(LS_KEY, JSON.stringify(state)); }catch(e){} }
+
+/* ---------- clothesline ---------- */
+function garmentStatus(g){
+  var d = daysBetween(g.lastWashed, todayISO());
+  if(d >= g.cycle) return {label:"Wash now", cls:"red", dot:"red"};
+  if(d >= g.cycle-1) return {label:"Due soon", cls:"amber", dot:"amber"};
+  return {label:"Fresh", cls:"green", dot:"green"};
+}
+function renderLine(){
+  var row = $("pegRow"); if(!row) return;
+  var html = "";
+  state.garments.forEach(function(g){
+    var st = garmentStatus(g);
+    var d = daysBetween(g.lastWashed, todayISO());
+    html += '<article class="garment"><div class="gicon">'+(GARMENT_ICONS[g.icon]||GARMENT_ICONS.shirt)+'</div>'
+      + '<h3>'+esc(g.name)+'</h3>'
+      + '<p class="meta">Washed '+d+' day'+(d===1?"":"s")+' ago · every '+g.cycle+' day'+(g.cycle===1?"":"s")+'</p>'
+      + '<div class="row"><span class="chip '+st.cls+'"><span class="dot '+st.dot+'"></span>'+st.label+'</span>'
+      + '<button class="washed" type="button" data-washed="'+g.id+'">Washed</button></div></article>';
+  });
+  row.innerHTML = html || '<p class="muted">The line is empty. Add a garment to start tracking it.</p>';
+  var due = state.garments.filter(function(g){ return garmentStatus(g).label==="Wash now"; }).length;
+  $("lineSummary").textContent = due ? due+" item"+(due===1?"":"s")+" need"+(due===1?"s":"")+" washing now" : "All fresh — nothing due right now";
+  var ts = $("tsDue"); if(ts) ts.textContent = due;
+}
+document.addEventListener("click", function(e){
+  var b = e.target.closest("[data-washed]");
+  if(b){
+    var g = state.garments.find(function(x){ return x.id===b.getAttribute("data-washed"); });
+    if(g){ g.lastWashed = todayISO(); save(); renderLine(); renderToday(); toast(g.name+" marked washed — clock restarted."); }
+  }
+});
+/* ---------- planner ---------- */
+var DAY_NAMES = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+function nextWashInfo(){
+  var today = new Date(); var dow = today.getDay();
+  for(var i=0;i<7;i++){
+    var d = (dow+i)%7;
+    if(state.washDays.indexOf(d) !== -1){
+      if(i===0) return {label:"Today", days:0};
+      return {label:DAY_NAMES[d], days:i};
+    }
+  }
+  return {label:"—", days:0};
+}
+function renderPlanner(){
+  var wr = $("weekdayRow"); if(!wr) return;
+  var html = "";
+  for(var d=0; d<7; d++){
+    html += '<button type="button" class="daypill'+(state.washDays.indexOf(d)!==-1?" on":"")+'" data-day="'+d+'">'+DAY_NAMES[d]+'</button>';
+  }
+  wr.innerHTML = html;
+  var done = state.loads.filter(function(l){ return l.done; }).length;
+  var total = state.loads.length || 1;
+  var ring = $("loadRing");
+  if(ring){ ring.style.strokeDashoffset = String(289 * (1 - done/total)); }
+  $("loadRingTxt").textContent = done+"/"+total;
+  $("loadLine").textContent = done+" of "+total+" loads done this week";
+  var nx = nextWashInfo();
+  $("nextWashLine").textContent = "Next wash day: "+nx.label+(nx.days>0?" · in "+nx.days+" day"+(nx.days===1?"":"s"):"");
