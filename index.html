@@ -163,3 +163,48 @@ header.top nav a:hover{background:var(--paper2);color:var(--ink)}
 .guide h3{font-size:18px;margin-bottom:6px}
 .guide p{color:var(--ink2);font-size:14.5px}
 .guide .k{margin-top:10px;font-size:13px;color:var(--terra);font-weight:700}
+.flatband{margin-top:44px;border-radius:28px;overflow:hidden;position:relative}
+.flatband img{width:100%;height:300px;object-fit:cover;animation:kb 30s ease-in-out infinite alternate}
+.flatband .cap{position:absolute;left:0;right:0;bottom:0;padding:22px 26px;background:linear-gradient(180deg,transparent,rgba(36,24,18,.82));color:#fdf6e7}
+.flatband .cap h3{font-size:24px}
+.flatband .cap p{opacity:.9;font-size:14.5px;max-width:560px}
+.settings{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+footer.site{margin:52px 0 30px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+/* ---------- drawer / modal / coach ---------- */
+.sheet{position:fixed;inset:0;z-index:150;display:none;align-items:flex-end;justify-content:center;background:rgba(36,24,18,.5)}
+.sheet.open{display:flex}
+.sheet .panel{background:var(--paper);border-radius:24px 24px 0 0;max-width:640px;width:100%;max-height:86vh;overflow:auto;padding:26px 26px 34px;animation:up .3s ease}
+@keyframes up{from{transform:translateY(30px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sheet .panel h3{font-size:24px;margin-bottom:4px}
+.sheet .x{float:right;border:1.5px solid var(--line);background:#fff;border-radius:50%;width:34px;height:34px;font-size:16px;font-weight:700;color:var(--ink2)}
+.formrow{margin:14px 0}
+.formrow label{display:block;font-weight:700;font-size:13.5px;margin-bottom:6px}
+.formrow input,.formrow select{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:12px;background:#fff}
+.formrow .hint{font-size:12.5px;color:var(--muted);margin-top:5px}
+#coach{position:fixed;inset:0;z-index:160;display:none;align-items:center;justify-content:center;background:rgba(36,24,18,.55);padding:20px}
+#coach.open{display:flex}
+#coach .box{background:var(--card);border-radius:22px;max-width:440px;width:100%;padding:28px;box-shadow:0 24px 60px rgba(0,0,0,.3);animation:up .3s ease}
+#coach .box h3{font-size:24px;margin:8px 0 6px}
+#coach .box p{color:var(--ink2);font-size:15px}
+#coach .dots{display:flex;gap:6px;margin:18px 0}
+#coach .dots i{width:8px;height:8px;border-radius:99px;background:var(--line)}
+#coach .dots i.on{background:var(--terra);width:22px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fdf6e7;padding:12px 20px;border-radius:999px;font-weight:600;font-size:14px;z-index:180;opacity:0;pointer-events:none;transition:.3s}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:760px){
+  .todaystrip .card{grid-template-columns:1fr 1fr}
+  .todaystrip .cell:nth-child(2){border-right:0}
+  .todaystrip .cell:nth-child(1),.todaystrip .cell:nth-child(2){border-bottom:1px solid var(--line)}
+  .plan,.costgrid,.forecast{grid-template-columns:1fr}
+  .compare{grid-template-columns:1fr}
+  header.top nav{display:none}
+  .garment{flex-basis:150px}
+}
+
+</style>
+</head>
+<body>
+<div id="intro" role="dialog" aria-label="Welcome">
+  <div class="lineart" aria-hidden="true">
+    <svg viewBox="0 0 440 110" fill="none">
+      <line x1="10" y1="12" x2="430" y2="12" stroke="#b99b6b" stroke-width="2"/>
