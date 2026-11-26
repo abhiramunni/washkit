@@ -651,3 +651,37 @@ var STAINS = [
    ["Wash normally","Machine wash at 30–40°. A spoon of baking soda in the drum helps."]]}, 
   {name:"Cooking oil / ghee", time:"Oil stains look worse after drying — treat before washing.", never:"Never wash in hot water before lifting the oil — heat drives it deeper.",
    steps:[["Blot the excess","Press with paper towel. Don't rub it in."],
+   ["Powder it","Cover with talcum powder or cornflour for 30 minutes — it drinks the oil."],
+   ["Dish soap","Brush the powder off, rub in dishwashing liquid, wait 10 minutes."],
+   ["Hot wash","Machine wash at the hottest temperature the label allows."]]}, 
+  {name:"Ink", time:"Ballpoint is the easiest ink to beat. Gel and fountain pens are harder.", never:"Never rub — it spreads the ink into a bigger blur.",
+   steps:[["Dab with milk","Soak the spot in cold milk for 30 minutes, or dab with rubbing alcohol."],
+   ["Blot and repeat","Press with a clean cloth, move to a clean part of the cloth each time."],
+   ["Dish soap","Rub in a drop of dishwashing liquid."],
+   ["Wash normally","Machine wash at 40°. Repeat the milk soak if a shadow remains."]]}, 
+  {name:"Sweat stains", time:"Yellow underarm stains are a slow build-up, not one spill.", never:"Never use chlorine bleach on sweat stains — it turns them more yellow.",
+   steps:[["Baking soda paste","Mix 3 spoons baking soda with a little water, spread on the stain."],
+   ["Wait 30 minutes","Let the paste dry on the fabric."],
+   ["Vinegar rinse","Rinse with 1 part vinegar to 4 parts water."],
+   ["Wash in the sun","Machine wash at 40°, then dry in direct sunlight — sun bleaches gently."]]}, 
+  {name:"Mud", time:"Mud is the one stain that gets easier if you wait.", never:"Never wash muddy clothes while the mud is wet — it smears everywhere.",
+   steps:[["Let it dry","Leave the garment until the mud is completely dry."],
+   ["Brush it off","Brush the dried mud off outside — most of it falls away."],
+   ["Cold soak","Soak in cold water with a spoon of detergent for 30 minutes."],
+   ["Wash normally","Machine wash at 40°."]]}, 
+  {name:"Blood", time:"Fresh blood comes out. Dried blood is a fight.", never:"Never use hot water — heat cooks blood into the fibres permanently.",
+   steps:[["Cold water, immediately","Rinse under cold running water, back of the fabric first."],
+   ["Salt paste","Rub in a paste of salt and cold water, leave 10 minutes."],
+   ["Soak","Soak in cold salted water for 30 minutes."],
+   ["Wash cold","Machine wash on a cold cycle. Repeat if needed — never tumble dry until it's gone."]]}, 
+  {name:"Red wine", time:"Salt is your best friend in the first five minutes.", never:"Never use hot water first, and never rub — it pushes the wine deeper.",
+   steps:[["Cover with salt","Pile table salt on the stain — it pulls the wine out. Leave 10 minutes."],
+   ["Cold rinse","Shake the salt off and rinse under cold water."],
+   ["Baking soda paste","Spread a baking soda paste on any remaining mark, wait 20 minutes."],
+   ["Wash normally","Machine wash at 40°. White wine or soda water also works in a pinch."]]}
+];
+var stainIdx = 0;
+function renderStains(){
+  $("stainPick").innerHTML = STAINS.map(function(s,i){ return '<button type="button" class="stainbtn'+(i===stainIdx?" on":"")+'" data-stain="'+i+'">'+esc(s.name)+'</button>'; }).join("");
+  var s = STAINS[stainIdx];
+  $("stainCard").innerHTML = '<p class="eyebrow">Stain SOS · '+esc(s.name)+'</p><h3 class="serif" style="font-size:24px;margin:6px 0">'+esc(s.time)+'</h3>'
