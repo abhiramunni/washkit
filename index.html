@@ -264,3 +264,52 @@ footer.site{margin:52px 0 30px;padding-top:22px;border-top:1px solid var(--line)
 </div></section>
 <section class="sec" id="plan"><div class="wrap">
   <p class="eyebrow">Wash-day planner</p>
+  <h2>Two wash days a week. That's the whole system.</h2>
+  <p class="sub">Pick your days, tick loads off as you do them, and WashKit keeps the countdown. No more "did I wash this?" — the line above already knows.</p>
+  <div class="plan">
+    <div class="card" style="padding:22px">
+      <h3 class="serif" style="font-size:20px">Your wash days</h3>
+      <p class="small muted">Tap days to switch them on or off. At least one day stays on.</p>
+      <div class="weekdays" id="weekdayRow" role="group" aria-label="Wash days"></div>
+      <div class="ringwrap">
+        <svg class="ring" viewBox="0 0 110 110" aria-hidden="true"><circle class="track" cx="55" cy="55" r="46"/><circle class="val" id="loadRing" cx="55" cy="55" r="46" stroke-dasharray="289" stroke-dashoffset="289"/><text x="55" y="62" text-anchor="middle" font-size="22" id="loadRingTxt">0/3</text></svg>
+        <div>
+          <b style="font-size:17px" id="loadLine">0 of 3 loads done this week</b>
+          <p class="small muted" id="nextWashLine">Next wash day: —</p>
+          <p class="small" style="margin-top:6px">A normal week is about <b>3 loads</b> for one person — lights, darks, and one for sheets &amp; towels.</p>
+        </div>
+      </div>
+      <div style="margin-top:14px" id="loadList"></div>
+    </div>
+    <div class="card" style="padding:22px">
+      <h3 class="serif" style="font-size:20px">This week's loads</h3>
+      <p class="small muted">Tap a load when it goes in the machine. WashKit remembers the week, so Monday starts clean.</p>
+      <div id="weekLoads"></div>
+      <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn small" id="addLoadBtn" type="button">+ Add a load</button>
+        <button class="btn ghost small" id="resetWeekBtn" type="button">Reset week</button>
+      </div>
+      <p class="small muted" style="margin-top:14px">Tip: wash sheets and towels together on the same day — they like hot water, your shirts don't.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec" id="symbols"><div class="wrap">
+  <p class="eyebrow">Care-symbol decoder</p>
+  <h2>That little label, in plain words.</h2>
+  <p class="sub">Every symbol on a care label, drawn the way it looks on the tag — with what it actually means and what to do. Tap any card for the full note.</p>
+  <div class="catbar" id="symCats" role="group" aria-label="Symbol categories"></div>
+  <div class="symgrid" id="symGrid"></div>
+</div></section>
+
+<section class="sec" id="stains"><div class="wrap">
+  <p class="eyebrow">Stain SOS</p>
+  <h2>Spilled something? Don't panic. Don't rub.</h2>
+  <p class="sub">Pick the stain, follow the steps in order. The golden rule for almost all of them: cold water first, hot water later — heat sets a stain for good.</p>
+  <div class="stainpick" id="stainPick" role="group" aria-label="Stains"></div>
+  <div class="card" style="padding:24px" id="stainCard"></div>
+</div></section>
+<section class="sec" id="cost"><div class="wrap">
+  <p class="eyebrow">Cost checker</p>
+  <h2>What does one load actually cost?</h2>
+  <p class="sub">Move the sliders to match your home. Prices are honest estimates — detergent, power and water at Bengaluru rates — so you can compare washing at home with the laundry shop down the road.</p>
