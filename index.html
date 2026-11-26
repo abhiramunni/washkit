@@ -208,3 +208,59 @@ footer.site{margin:52px 0 30px;padding-top:22px;border-top:1px solid var(--line)
   <div class="lineart" aria-hidden="true">
     <svg viewBox="0 0 440 110" fill="none">
       <line x1="10" y1="12" x2="430" y2="12" stroke="#b99b6b" stroke-width="2"/>
+      <g class="sway"><rect x="52" y="12" width="10" height="14" rx="2" fill="#d9a441"/><path d="M48 26 h52 v44 a6 6 0 0 1 -6 6 h-40 a6 6 0 0 1 -6 -6 z" fill="#f7ead2"/><path d="M74 26 v50" stroke="#e5d9c3" stroke-width="2"/></g>
+      <g class="sway d2"><rect x="182" y="12" width="10" height="14" rx="2" fill="#c05b2e"/><path d="M168 26 h56 l-6 52 h-44 z" fill="#c05b2e"/></g>
+      <g class="sway d3"><rect x="312" y="12" width="10" height="14" rx="2" fill="#d9a441"/><path d="M306 26 h54 v40 h-54 z" fill="#e8b84b"/><circle cx="333" cy="46" r="8" fill="#faf6ee"/></g>
+      <circle cx="404" cy="34" r="10" fill="#e8b84b" opacity=".9"/>
+      <circle cx="28" cy="60" r="4" fill="#e8b84b" opacity=".7"/>
+    </svg>
+  </div>
+  <h1>Wash<span>Kit</span></h1>
+  <p>Laundry day, without the guesswork.</p>
+  <div class="bar"><i id="introBar"></i></div>
+  <button class="skip" id="introSkip" type="button">Skip intro</button>
+</div>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top"><span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M5 7v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7M9 7l1.5-3h3L15 7"/></svg></span>WashKit</a>
+    <nav aria-label="Sections">
+      <a href="#line">The Line</a><a href="#plan">Wash days</a><a href="#symbols">Symbols</a><a href="#stains">Stain SOS</a><a href="#cost">Cost</a><a href="#dry">Drying</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <img src="washkit-hero.webp" alt="Fresh laundry hanging on a sunny balcony clothesline" onerror="this.style.display='none'">
+  <div class="shade"></div>
+  <div class="copy"><div class="wrap">
+    <p class="eyebrow" style="color:var(--gold)">Your laundry, sorted</p>
+    <h1>Laundry day, <span>without the guesswork.</span></h1>
+    <p>See what needs washing, decode any care label, rescue any stain — and know exactly what each load costs you.</p>
+  </div></div>
+</section>
+
+<div class="wrap todaystrip"><div class="card" id="todayStrip">
+  <div class="cell"><b id="tsNext">—</b><span>until your next wash day</span></div>
+  <div class="cell"><b id="tsDue">—</b><span>items need washing now</span></div>
+  <div class="cell"><b id="tsLoads">—</b><span>loads done this week</span></div>
+  <div class="cell"><b id="tsMonth">—</b><span>spent on laundry this month</span></div>
+</div></div>
+
+<section class="sec" id="line"><div class="wrap">
+  <p class="eyebrow">The Line</p>
+  <h2>Everything you own, on one line.</h2>
+  <p class="sub">Each peg is something in your wash pile. Tap <b>Washed</b> when a load is done and its clock restarts. Add your own clothes below — the line grows with you.</p>
+  <div class="line" aria-label="Your clothesline">
+    <div class="rope" aria-hidden="true"></div>
+    <div class="pegrow" id="pegRow"></div>
+  </div>
+  <div style="margin-top:16px;display:flex;gap:10px;flex-wrap:wrap">
+    <button class="btn terra" id="addGarmentBtn" type="button">+ Add a garment</button>
+    <button class="btn ghost" id="washAllBtn" type="button">Mark everything washed</button>
+    <span class="chip" id="lineSummary">—</span>
+  </div>
+</div></section>
+<section class="sec" id="plan"><div class="wrap">
+  <p class="eyebrow">Wash-day planner</p>
