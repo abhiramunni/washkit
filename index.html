@@ -873,3 +873,36 @@ function showCoach(){
     + '<div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn ghost" type="button" id="coachSkip">Skip tour</button><button class="btn terra" type="button" id="coachNext">'+(coachStep===COACH.length-1?"Got it":"Next")+'</button></div>';
   $("coach").classList.add("open");
   $("coachSkip").addEventListener("click", function(){ $("coach").classList.remove("open"); });
+  $("coachNext").addEventListener("click", function(){
+    coachStep++;
+    if(coachStep>=COACH.length){ $("coach").classList.remove("open"); }
+    else showCoach();
+  });
+}
+/* ---------- intro ---------- */
+function hideIntro(){ $("intro").classList.add("hide"); }
+(function intro(){
+  var bar = $("introBar");
+  var quick = false;
+  try{ quick = !!localStorage.getItem(LS_KEY); }catch(e){}
+  var dur = quick ? 900 : 2600;
+  var start = Date.now();
+  var iv = setInterval(function(){
+    var p = Math.min(100, (Date.now()-start)/dur*100);
+    if(bar) bar.style.width = p+"%";
+    if(p>=100){ clearInterval(iv); hideIntro(); }
+  }, 60);
+  $("introSkip").addEventListener("click", function(){ clearInterval(iv); hideIntro(); });
+  $("intro").addEventListener("click", function(e){ if(e.target===$("intro")){ clearInterval(iv); hideIntro(); } });
+})();
+/* ---------- init ---------- */
+function renderAll(){
+  renderLine(); renderPlanner(); renderCost(); renderSymbols(); renderStains(); renderGuides(); renderToday();
+}
+renderAll();
+loadForecast();
+setTimeout(function(){ if(!state.seen){ state.seen = true; save(); showCoach(); } }, 2900);
+window.WashKit = { state:function(){ return state; }, garmentStatus:garmentStatus, nextWashInfo:nextWashInfo, SYMBOLS:SYMBOLS, STAINS:STAINS };
+</script>
+</body>
+</html>
