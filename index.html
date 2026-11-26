@@ -827,3 +827,49 @@ $("resetWeekBtn").addEventListener("click", function(){
 });
 /* ---------- settings ---------- */
 $("copyBtn").addEventListener("click", function(){
+  var due = state.garments.filter(function(g){ return garmentStatus(g).label==="Wash now"; }).length;
+  var nx = nextWashInfo();
+  var c = state.cost;
+  var perLoad = c.det/1000*c.dose + 0.8*c.pow + 0.5;
+  var lines = ["My laundry — WashKit", "Next wash day: "+nx.label, "Items needing a wash now: "+due,
+    "Loads done this week: "+state.loads.filter(function(l){return l.done;}).length+" of "+state.loads.length,
+    "One machine load costs about "+inr(perLoad,2)+" ("+inr(perLoad*c.loads*4.33)+" a month at "+c.loads+" loads a week)."];
+  var text = lines.join("\n");
+  function done(){ toast("Summary copied."); }
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); done(); }); }
+  else { fallbackCopy(text); done(); }
+});
+function fallbackCopy(text){
+  var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); }catch(e){} document.body.removeChild(ta);
+}
+$("removeSamplesBtn").addEventListener("click", function(){
+  var before = state.garments.length + state.loads.length;
+  state.garments = state.garments.filter(function(g){ return !g.sample; });
+  state.loads = state.loads.filter(function(l){ return !l.sample; });
+  save(); renderLine(); renderPlanner(); renderToday();
+  toast(before - (state.garments.length + state.loads.length) + " sample items removed.");
+});
+var eraseArm = false;
+$("eraseBtn").addEventListener("click", function(){
+  if(!eraseArm){ eraseArm = true; $("eraseBtn").textContent = "Tap again to erase everything"; setTimeout(function(){ eraseArm=false; $("eraseBtn").textContent="Erase everything"; }, 4000); return; }
+  try{ localStorage.removeItem(LS_KEY); }catch(e){}
+  state = seedState(); save();
+  renderLine(); renderPlanner(); renderCost(); renderSymbols(); renderStains(); renderToday();
+  $("eraseBtn").textContent = "Erase everything"; eraseArm = false;
+  toast("Erased — fresh start with samples.");
+});
+/* ---------- coach ---------- */
+var COACH = [
+  {t:"The Line is your wash pile", p:"Every garment you own hangs on the line with a Fresh, Due soon or Wash now tag. Tap Washed when a load is done and its clock restarts."},
+  {t:"Labels, decoded", p:"Tap any care symbol to see what it means in plain words — no more guessing whether that triangle means bleach or trouble."},
+  {t:"Stains and costs, sorted", p:"Stain SOS walks you through any spill step by step, and the cost checker shows what each load really costs you."}
+];
+var coachStep = 0;
+function showCoach(){
+  var s = COACH[coachStep];
+  $("coachBox").innerHTML = '<p class="eyebrow">Quick tour · Step '+(coachStep+1)+' of '+COACH.length+'</p><h3>'+esc(s.t)+'</h3><p>'+esc(s.p)+'</p>'
+    + '<div class="dots">'+COACH.map(function(_,i){ return '<i class="'+(i===coachStep?"on":"")+'"></i>'; }).join("")+'</div>'
+    + '<div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn ghost" type="button" id="coachSkip">Skip tour</button><button class="btn terra" type="button" id="coachNext">'+(coachStep===COACH.length-1?"Got it":"Next")+'</button></div>';
+  $("coach").classList.add("open");
+  $("coachSkip").addEventListener("click", function(){ $("coach").classList.remove("open"); });
