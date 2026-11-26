@@ -780,3 +780,50 @@ function openSheet(html){
   $("sheet").classList.add("open");
 }
 function closeSheet(){ $("sheet").classList.remove("open"); }
+$("sheet").addEventListener("click", function(e){ if(e.target===$("sheet")) closeSheet(); });
+document.addEventListener("click", function(e){
+  var c = e.target.closest("[data-close]");
+  if(c) closeSheet();
+});
+/* ---------- add garment / add load ---------- */
+function garmentIconOptions(){
+  return Object.keys(GARMENT_ICONS).map(function(k){
+    return '<option value="'+k+'">'+k.charAt(0).toUpperCase()+k.slice(1)+'</option>';
+  }).join("");
+}
+$("addGarmentBtn").addEventListener("click", function(){
+  openSheet('<button class="x" type="button" data-close aria-label="Close">×</button><p class="eyebrow">Add to the line</p><h3>Add a garment</h3>'
+    + '<div class="formrow"><label for="fName">What is it?</label><input id="fName" type="text" placeholder="e.g. Favourite hoodie" maxlength="40"></div>'
+    + '<div class="formrow"><label for="fIcon">Type</label><select id="fIcon">'+garmentIconOptions()+'</select></div>'
+    + '<div class="formrow"><label for="fCycle">Wash it every</label><select id="fCycle"><option value="1">1 day (gym wear)</option><option value="2">2 days</option><option value="3" selected>3 days</option><option value="4">4 days</option><option value="7">7 days (sheets, towels)</option><option value="14">14 days</option></select><p class="hint">WashKit counts from the day you last washed it.</p></div>'
+    + '<div class="formrow"><label for="fLast">Last washed</label><input id="fLast" type="date" value="'+todayISO()+'"></div>'
+    + '<button class="btn terra" type="button" id="fSave">Add to the line</button>');
+  $("fSave").addEventListener("click", function(){
+    var name = $("fName").value.trim();
+    if(!name){ toast("Give it a name first."); $("fName").focus(); return; }
+    var last = $("fLast").value || todayISO();
+    state.garments.push({id:"g"+Date.now(), name:name, icon:$("fIcon").value, lastWashed:last, cycle:+$("fCycle").value, sample:false});
+    save(); renderLine(); renderToday(); closeSheet(); toast(name+" is on the line.");
+  });
+});
+$("washAllBtn").addEventListener("click", function(){
+  state.garments.forEach(function(g){ g.lastWashed = todayISO(); });
+  save(); renderLine(); renderToday(); toast("Everything marked washed. Fresh line!");
+});
+$("addLoadBtn").addEventListener("click", function(){
+  openSheet('<button class="x" type="button" data-close aria-label="Close">×</button><p class="eyebrow">Add a load</p><h3>What goes in the machine?</h3>'
+    + '<div class="formrow"><label for="lName">Load name</label><input id="lName" type="text" placeholder="e.g. Curtains" maxlength="40"></div>'
+    + '<button class="btn terra" type="button" id="lSave">Add load</button>');
+  $("lSave").addEventListener("click", function(){
+    var name = $("lName").value.trim();
+    if(!name){ toast("Give the load a name first."); $("lName").focus(); return; }
+    state.loads.push({name:name, done:false, sample:false});
+    save(); renderPlanner(); closeSheet(); toast(name+" added to this week.");
+  });
+});
+$("resetWeekBtn").addEventListener("click", function(){
+  state.loads.forEach(function(l){ l.done=false; });
+  save(); renderPlanner(); renderToday(); toast("Week reset — fresh loads.");
+});
+/* ---------- settings ---------- */
+$("copyBtn").addEventListener("click", function(){
