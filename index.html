@@ -313,3 +313,39 @@ footer.site{margin:52px 0 30px;padding-top:22px;border-top:1px solid var(--line)
   <p class="eyebrow">Cost checker</p>
   <h2>What does one load actually cost?</h2>
   <p class="sub">Move the sliders to match your home. Prices are honest estimates — detergent, power and water at Bengaluru rates — so you can compare washing at home with the laundry shop down the road.</p>
+  <div class="costgrid">
+    <div class="card" style="padding:22px">
+      <div class="sliderow"><label><span>Loads per week</span><b id="vLoads">4</b></label><input type="range" id="inLoads" min="1" max="14" step="1" value="4" aria-label="Loads per week"></div>
+      <div class="sliderow"><label><span>Detergent, ₹ per 1 kg pack</span><b id="vDet">₹220</b></label><input type="range" id="inDet" min="120" max="400" step="10" value="220" aria-label="Detergent price per kilogram"></div>
+      <div class="sliderow"><label><span>Detergent per load</span><b id="vDose">30 g</b></label><input type="range" id="inDose" min="15" max="60" step="5" value="30" aria-label="Detergent grams per load"></div>
+      <div class="sliderow"><label><span>Power, ₹ per unit (kWh)</span><b id="vPow">₹7</b></label><input type="range" id="inPow" min="4" max="12" step="0.5" value="7" aria-label="Electricity price per unit"></div>
+      <p class="small muted" style="margin-top:10px">Assumes a front-load machine: about 0.8 units of power and 50 litres of water per load. Hand-wash uses no power and half the detergent.</p>
+    </div>
+    <div class="card" style="padding:22px">
+      <p class="small muted" style="font-weight:700;letter-spacing:.08em;text-transform:uppercase">Machine wash at home</p>
+      <p class="bigmoney" style="margin-top:6px">₹<span id="costLoad">12.70</span> <small>per load</small></p>
+      <p class="small" style="margin-top:4px" id="costBreak">Detergent ₹6.60 + power ₹5.60 + water ₹0.50</p>
+      <div class="compare">
+        <div class="col"><b id="costMonth">₹220</b><span>per month · machine</span></div>
+        <div class="col win"><b id="costHand">₹62</b><span>per month · hand wash</span></div>
+        <div class="col"><b id="costShop">₹5,542</b><span>per month · laundry shop</span></div>
+      </div>
+      <p style="margin-top:16px;font-size:15px" id="costVerdict">At 4 loads a week, the machine costs you about <b>₹2,641 a year</b>. The laundry shop would charge roughly <b>₹66,500</b> for the same washing.</p>
+      <p class="small muted">Laundry shop maths: ₹80 per kg × about 4 kg a load. Hand-wash maths: 15 g detergent, no power. All figures are estimates — your machine and your tariff decide the real number.</p>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec" id="dry"><div class="wrap">
+  <p class="eyebrow">Drying forecast · Bengaluru</p>
+  <h2>Will it dry today?</h2>
+  <p class="sub">Live weather for Bengaluru, turned into a plain answer. Humidity and rain matter more than sunshine — a cloudy dry day beats a sunny humid one.</p>
+  <div class="forecast">
+    <div class="card" style="padding:24px">
+      <p class="verdict" id="dryVerdict">Checking the sky…</p>
+      <p class="small muted" id="dryNote">Live data from Open-Meteo. Works offline too — it just falls back to "—" instead of guessing.</p>
+      <div style="margin-top:14px">
+        <div class="fstat"><span>Rain chance today</span><b id="dryRain">—</b></div>
+        <div class="fstat"><span>Humidity now</span><b id="dryHum">—</b></div>
+        <div class="fstat"><span>Cloud cover</span><b id="dryCloud">—</b></div>
+        <div class="fstat"><span>Wind</span><b id="dryWind">—</b></div>
