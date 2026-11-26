@@ -744,3 +744,39 @@ function loadForecast(){
     var hum = cur.relative_humidity_2m;
     var cloud = cur.cloud_cover;
     var wind = cur.wind_speed_10m;
+    var temp = cur.temperature_2m;
+    $("dryRain").textContent = (rain==null?"—":rain+"%");
+    $("dryHum").textContent = (hum==null?"—":hum+"%");
+    $("dryCloud").textContent = (cloud==null?"—":cloud+"%");
+    $("dryWind").textContent = (wind==null?"—":wind+" km/h");
+    $("dryTemp").textContent = (temp==null?"—":temp+"°C");
+    var verdict, time;
+    if(rain >= 50){ verdict = "Don't hang it out today."; time = "Rain is likely — dry indoors with a fan, or wait for tomorrow. Wet clothes left out in rain just get dirty again."; }
+    else if(hum != null && hum >= 75){ verdict = "It'll dry — slowly."; time = "Humid air is the bottleneck. Thin clothes: 3–4 hours. Jeans and towels: all day. A fan pointed at the line is worth more than sun."; }
+    else if(rain >= 25){ verdict = "Mostly fine — keep an eye on the sky."; time = "Some rain chance later. Hang it out now, thin clothes first (2–3 hours), and bring the thick stuff in by evening."; }
+    else { verdict = "Good drying day."; time = "Low humidity, low rain chance. Thin clothes: 2–3 hours on the line. Jeans and towels: 5–8 hours. Peg by the hem so they dry straight."; }
+    $("dryVerdict").textContent = verdict;
+    $("dryTime").textContent = time;
+    $("dryNote").textContent = "Live data from Open-Meteo for Bengaluru, just now. Humidity and rain matter more than sunshine.";
+  }).catch(function(){ if(timer) clearTimeout(timer); renderDryFallback(); });
+}
+/* ---------- guides ---------- */
+var GUIDES = [
+  {t:"Sort before you wash", b:"Whites, darks, colours — three piles, every time. One red sock in the white load is a lesson you only need once.", k:"The 10-second sort saves a ruined load."},
+  {t:"How much detergent is enough", b:"One cap or about 30 g per full load is plenty. More detergent doesn't mean cleaner clothes — it leaves residue that makes fabric stiff and dull.", k:"If the drum still smells soapy, you used too much."},
+  {t:"Keep whites white", b:"Wash whites together, at 40–60°, with a spoon of baking soda in the drum. Dry them in the sun — sunlight is a gentle, free whitener.", k:"Never wash whites with darks. Ever."},
+  {t:"Stop clothes shrinking", b:"Shrinking is heat, not water. Wash at 30°, skip the dryer for anything cotton-rich, and never iron a damp woollen on high.", k:"If the label says 30°, it means 30°."},
+  {t:"Monsoon drying that works", b:"Indoor line + ceiling fan + space between pieces. Clothes touching each other stay damp and start smelling. A dehumidifier helps if you have one.", k:"Space on the line matters more than sun."},
+  {t:"Ironing without the fear", b:"Iron cotton slightly damp, inside-out for prints, and always check the dots on the label — one dot is cool, three dots is hot. When in doubt, start cool.", k:"A damp press cloth protects delicate fabric."}
+];
+function renderGuides(){
+  $("guideGrid").innerHTML = GUIDES.map(function(g){
+    return '<article class="card guide"><h3>'+esc(g.t)+'</h3><p>'+esc(g.b)+'</p><p class="k">'+esc(g.k)+'</p></article>';
+  }).join("");
+}
+/* ---------- sheet (modal) ---------- */
+function openSheet(html){
+  $("sheetPanel").innerHTML = html;
+  $("sheet").classList.add("open");
+}
+function closeSheet(){ $("sheet").classList.remove("open"); }
