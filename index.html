@@ -614,3 +614,40 @@ var SYMBOLS = [
   {cat:"Iron", name:"Do not iron", mean:"No iron, no steamer, no pressing.", tip:"Hang it straight out of the wash — gravity does the ironing.", svg:function(){ return ironSVG(0, true); }},
   {cat:"Dry clean", name:"Dry clean", mean:"Take it to a dry cleaner.", tip:"Empty the pockets and point out any stains when you hand it over.", svg:function(){ return dcSVG(""); }},
   {cat:"Dry clean", name:"Do not dry clean", mean:"Dry cleaning would damage it.", tip:"Wash it at home per the wash symbol instead.", svg:function(){ return dcSVG("", true); }},
+  {cat:"Dry clean", name:"Dry clean, any solvent", mean:"The cleaner can use any solvent.", tip:"The 'A' in the circle means all solvents are safe for this fabric.", svg:function(){ return dcSVG("A"); }},
+  {cat:"Dry clean", name:"Dry clean, petroleum only", mean:"Petroleum solvent only — no stronger solvents.", tip:"The 'P' tells the cleaner which solvent to use. Just hand it over.", svg:function(){ return dcSVG("P"); }},
+  {cat:"Dry clean", name:"Wet clean", mean:"Professional wet cleaning — gentle water wash at the cleaners.", tip:"The 'W' means the cleaners wash it with water, but professionally.", svg:function(){ return dcSVG("W"); }}
+];
+var symCat = "All";
+function renderSymbols(){
+  var cats = ["All","Wash","Bleach","Dry","Iron","Dry clean"];
+  $("symCats").innerHTML = cats.map(function(c){ return '<button type="button" class="'+(symCat===c?"on":"")+'" data-symcat="'+c+'">'+c+'</button>'; }).join("");
+  var list = SYMBOLS.filter(function(s){ return symCat==="All" || s.cat===symCat; });
+  $("symGrid").innerHTML = list.map(function(s, i){
+    var idx = SYMBOLS.indexOf(s);
+    return '<button type="button" class="sym" data-sym="'+idx+'">'+s.svg()+'<h3>'+esc(s.name)+'</h3><p>'+esc(s.mean)+'</p><span class="tag">'+esc(s.cat)+'</span></button>';
+  }).join("");
+}
+document.addEventListener("click", function(e){
+  var cb = e.target.closest("[data-symcat]");
+  if(cb){ symCat = cb.getAttribute("data-symcat"); renderSymbols(); return; }
+  var sb = e.target.closest("[data-sym]");
+  if(sb){
+    var s = SYMBOLS[+sb.getAttribute("data-sym")];
+    openSheet('<button class="x" type="button" data-close aria-label="Close">×</button><p class="eyebrow">'+esc(s.cat)+' symbol</p><h3>'+esc(s.name)+'</h3><div style="width:84px;margin:12px 0">'+s.svg()+'</div><p style="font-size:16px">'+esc(s.mean)+'</p><p style="margin-top:10px;color:var(--ink2)"><b>What to do:</b> '+esc(s.tip)+'</p>');
+  }
+});
+/* ---------- stain SOS ---------- */
+var STAINS = [
+  {name:"Turmeric / curry", time:"Act fast — turmeric stains set in sunlight.", never:"Never use hot water first. Never put it in the dryer until the stain is gone.",
+   steps:[["Scrape it off","Lift off any curry with a spoon. Don't spread it."],
+   ["Cold rinse","Hold the stain under cold running water, back of the fabric first."],
+   ["Dish soap, 15 minutes","Rub in a drop of dishwashing liquid and leave it for 15 minutes."],
+   ["Wash normally","Machine wash at 40°. If a yellow shadow remains, dry it in the sun — sunlight fades turmeric."]]}, 
+  {name:"Chai & coffee", time:"Fresh stains come out easily; dried ones need a soak.", never:"Never use hot water first — it cooks the milk protein into the fabric.",
+   steps:[["Blot, don't rub","Press with a clean cloth to lift as much as you can."],
+   ["Cold water flush","Rinse under cold water for a minute."],
+   ["Vinegar mix","Soak 30 minutes in 1 litre cold water + 1 spoon white vinegar."],
+   ["Wash normally","Machine wash at 30–40°. A spoon of baking soda in the drum helps."]]}, 
+  {name:"Cooking oil / ghee", time:"Oil stains look worse after drying — treat before washing.", never:"Never wash in hot water before lifting the oil — heat drives it deeper.",
+   steps:[["Blot the excess","Press with paper towel. Don't rub it in."],
