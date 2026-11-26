@@ -685,3 +685,62 @@ function renderStains(){
   $("stainPick").innerHTML = STAINS.map(function(s,i){ return '<button type="button" class="stainbtn'+(i===stainIdx?" on":"")+'" data-stain="'+i+'">'+esc(s.name)+'</button>'; }).join("");
   var s = STAINS[stainIdx];
   $("stainCard").innerHTML = '<p class="eyebrow">Stain SOS · '+esc(s.name)+'</p><h3 class="serif" style="font-size:24px;margin:6px 0">'+esc(s.time)+'</h3>'
+    + '<div class="steps">' + s.steps.map(function(st){ return '<div class="step"><div><b>'+esc(st[0])+'</b><p>'+esc(st[1])+'</p></div></div>'; }).join("") + '</div>'
+    + '<p style="margin-top:14px;padding:12px 14px;background:#fbe4de;border-radius:12px;font-size:14.5px"><b>Never:</b> '+esc(s.never)+'</p>';
+}
+document.addEventListener("click", function(e){
+  var b = e.target.closest("[data-stain]");
+  if(b){ stainIdx = +b.getAttribute("data-stain"); renderStains(); }
+});
+/* ---------- cost calculator ---------- */
+function renderCost(){
+  var c = state.cost;
+  $("vLoads").textContent = c.loads;
+  $("vDet").textContent = inr(c.det);
+  $("vDose").textContent = c.dose + " g";
+  $("vPow").textContent = inr(c.pow);
+  var detPerLoad = c.det/1000*c.dose;
+  var powPerLoad = 0.8*c.pow;
+  var perLoad = detPerLoad + powPerLoad + 0.5;
+  var handPerLoad = c.det/1000*15 + 0.3;
+  var shopPerLoad = 320;
+  $("costLoad").textContent = perLoad.toFixed(2);
+  $("costBreak").textContent = "Detergent "+inr(detPerLoad,2)+" + power "+inr(powPerLoad,2)+" + water ₹0.50";
+  $("costMonth").textContent = inr(perLoad*c.loads*4.33);
+  $("costHand").textContent = inr(handPerLoad*c.loads*4.33);
+  $("costShop").textContent = inr(shopPerLoad*c.loads*4.33);
+  $("costVerdict").innerHTML = "At "+c.loads+" load"+(c.loads===1?"":"s")+" a week, the machine costs you about <b>"+inr(perLoad*c.loads*52)+" a year</b>. The laundry shop would charge roughly <b>"+inr(shopPerLoad*c.loads*52)+"</b> for the same washing.";
+  var t4 = $("tsMonth"); if(t4) t4.textContent = inr(perLoad*c.loads*4.33);
+}
+["inLoads","inDet","inDose","inPow"].forEach(function(id){
+  var el = $(id);
+  if(el) el.addEventListener("input", function(){
+    state.cost.loads = +$("inLoads").value;
+    state.cost.det = +$("inDet").value;
+    state.cost.dose = +$("inDose").value;
+    state.cost.pow = +$("inPow").value;
+    save(); renderCost();
+  });
+});
+/* ---------- drying forecast ---------- */
+function renderDryFallback(){
+  $("dryVerdict").textContent = "Couldn't reach the weather — check the sky yourself.";
+  $("dryNote").textContent = "Live data is offline right now. Rule of thumb: if the balcony feels humid, give it an extra 2 hours.";
+  $("dryTime").textContent = "No live data — on a normal Bengaluru day, thin clothes take 2–3 hours on the line.";
+}
+function loadForecast(){
+  if(typeof fetch === "undefined"){ renderDryFallback(); return; }
+  var ctrl = (typeof AbortController !== "undefined") ? new AbortController() : null;
+  var timer = null;
+  if(ctrl) timer = setTimeout(function(){ try{ ctrl.abort(); }catch(e){} }, 6000);
+  var url = "https://api.open-meteo.com/v1/forecast?latitude=12.97&longitude=77.59&current=temperature_2m,relative_humidity_2m,cloud_cover,wind_speed_10m&hourly=precipitation_probability&timezone=Asia%2FKolkata&forecast_days=1";
+  var opts = {};
+  if(ctrl) opts.signal = ctrl.signal;
+  fetch(url, opts).then(function(r){ return r.json(); }).then(function(j){
+    if(timer) clearTimeout(timer);
+    var cur = j.current || {};
+    var probs = (j.hourly && j.hourly.precipitation_probability) || [];
+    var rain = probs.length ? Math.max.apply(null, probs) : 0;
+    var hum = cur.relative_humidity_2m;
+    var cloud = cur.cloud_cover;
+    var wind = cur.wind_speed_10m;
