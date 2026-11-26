@@ -563,3 +563,38 @@ function tubSVG(num, opts){
 function triSVG(mode){
   var inner = '<path d="M32 12 L56 52 H8 z"/>';
   if(mode==="cl") inner += '<text x="32" y="46" text-anchor="middle" font-size="11" font-weight="700" fill="'+INK+'" stroke="none" font-family="Inter,sans-serif">Cl</text>';
+  if(mode==="lines") inner += '<line x1="20" y1="40" x2="44" y2="40" stroke-width="2"/><line x1="23" y1="46" x2="41" y2="46" stroke-width="2"/>';
+  if(mode==="x") inner += '<line x1="14" y1="14" x2="50" y2="54" stroke-width="3"/><line x1="50" y1="14" x2="14" y2="54" stroke-width="3"/>';
+  return svgWrap(inner);
+}
+function tumbleSVG(mode, dots){
+  var inner = '<rect x="10" y="10" width="44" height="44" rx="3"/><circle cx="32" cy="32" r="15"/>';
+  if(dots){ for(var i=0;i<dots;i++){ inner += '<circle cx="'+(26+i*6)+'" cy="32" r="1.8" fill="'+INK+'" stroke="none"/>'; } }
+  if(mode==="x") inner += '<line x1="10" y1="10" x2="54" y2="54" stroke-width="3"/><line x1="54" y1="10" x2="10" y2="54" stroke-width="3"/>';
+  return svgWrap(inner);
+}
+function drySVG(mode){
+  var inner = '<rect x="10" y="10" width="44" height="44" rx="3"/>';
+  if(mode==="line") inner += '<path d="M14 22 q9 -6 18 0 t18 0" stroke-width="2"/>';
+  if(mode==="flat") inner += '<line x1="18" y1="32" x2="46" y2="32" stroke-width="2"/>';
+  if(mode==="shade") inner += '<path d="M10 10 h22 l-22 22 z" fill="'+INK+'" stroke="none" opacity=".85"/><path d="M14 22 q9 -6 18 0 t18 0" stroke-width="2"/>';
+  return svgWrap(inner);
+}
+function ironSVG(dots, x){
+  var inner = '<path d="M14 42 h34 a4 4 0 0 0 4 -4 v-2 a4 4 0 0 0 -2.6 -3.7 L38 26 a8 8 0 0 0 -6 -2.6 H22 a4 4 0 0 0 -4 4 v10 a4 4 0 0 0 -4 4 z"/>';
+  if(dots){ for(var i=0;i<dots;i++){ inner += '<circle cx="'+(28+i*7)+'" cy="33" r="1.8" fill="'+INK+'" stroke="none"/>'; } }
+  if(x) inner += '<line x1="10" y1="10" x2="54" y2="54" stroke-width="3"/><line x1="54" y1="10" x2="10" y2="54" stroke-width="3"/>';
+  return svgWrap(inner);
+}
+function dcSVG(letter, x){
+  var inner = '<circle cx="32" cy="32" r="22"/>';
+  if(letter) inner += '<text x="32" y="39" text-anchor="middle" font-size="20" font-weight="700" fill="'+INK+'" stroke="none" font-family="Inter,sans-serif">'+letter+'</text>';
+  if(x) inner += '<line x1="12" y1="12" x2="52" y2="52" stroke-width="3"/><line x1="52" y1="12" x2="12" y2="52" stroke-width="3"/>';
+  return svgWrap(inner);
+}
+var SYMBOLS = [
+  {cat:"Wash", name:"Machine wash, 40°", mean:"Normal machine wash, up to 40°.", tip:"The default for most everyday clothes — cottons, tees, bedsheets.", svg:function(){ return tubSVG("40"); }},
+  {cat:"Wash", name:"Machine wash, 30°", mean:"Wash at 30° or cooler.", tip:"Best for colours and delicates. Saves power and stops colours bleeding.", svg:function(){ return tubSVG("30"); }},
+  {cat:"Wash", name:"Machine wash, 60°", mean:"Hot wash, up to 60°.", tip:"For whites, towels and sheets that need a proper clean. Not for colours.", svg:function(){ return tubSVG("60"); }},
+  {cat:"Wash", name:"Hand wash", mean:"Wash by hand, in cool water.", tip:"Fill a bucket, gentle soap, no wringing — press the water out instead.", svg:function(){ return tubSVG("", {hand:true}); }},
+  {cat:"Wash", name:"Do not wash", mean:"No water at all — not even by hand.", tip:"Take it to the dry cleaner, or spot-clean very gently with a damp cloth.", svg:function(){ return tubSVG("", {x:true}); }},
