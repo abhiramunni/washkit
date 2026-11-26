@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#2b1d12">
+<meta name="description" content="WashKit — laundry, sorted: your clothesline, wash-day planner, care-symbol decoder, stain SOS, laundry cost maths and a drying forecast for Bengaluru.">
+<title>WashKit — Laundry, Sorted</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,650;9..144,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#faf6ee; --paper2:#f3ecdd; --card:#fffdf7; --ink:#2b1d12; --ink2:#5c4632;
+  --muted:#8a7360; --line:#e5d9c3; --bronze:#b7791f; --bronze2:#d9a441; --gold:#e8b84b;
+  --terra:#c05b2e; --terra2:#a34a24; --sage:#7a7a52; --green:#4a7a3f; --red:#b3402e;
+  --dark:#241812; --dark2:#3a2a1e; --shadow:0 10px 30px rgba(43,29,18,.10);
+  --r:18px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif;font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.serif{font-family:Fraunces,Georgia,serif}
+img{max-width:100%;display:block}
+button{font-family:inherit;cursor:pointer}
+input,select,textarea{font-family:inherit;font-size:15px}
+a{color:var(--terra)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:.22em;text-transform:uppercase;color:var(--bronze)}
+.sec{padding:44px 0 8px}
+.sec h2{font-size:clamp(26px,4vw,36px);font-weight:800;line-height:1.12;margin:6px 0 6px}
+.sec .sub{color:var(--ink2);max-width:640px;margin-bottom:20px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--paper2);border:1px solid var(--line);border-radius:999px;padding:5px 12px;font-size:12.5px;font-weight:700;color:var(--ink2)}
+.chip.gold{background:#f7e8c4;border-color:#e8cf96;color:#7a5510}
+.chip.green{background:#e6efe0;border-color:#c4d8b8;color:#33511f}
+.chip.red{background:#fbe4de;border-color:#f0c0b4;color:#8c2f1d}
+.chip.terra{background:#fbeadd;border-color:#eec4a8;color:#7c3416}
+.btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:12px 20px;font-weight:700;font-size:14.5px;background:var(--ink);color:#fff;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(43,29,18,.25)}
+.btn.terra{background:var(--terra)}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.small{padding:8px 14px;font-size:13px}
+.btn:disabled{opacity:.45;cursor:default;transform:none;box-shadow:none}
+.icon{width:18px;height:18px;flex:none}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+/* ---------- intro ---------- */
